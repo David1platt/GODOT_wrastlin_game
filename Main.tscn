@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Node.gd" type="Script" id=1]
+[ext_resource path="res://ring.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ai_opponent.tscn" type="PackedScene" id=4]
+
+[node name="Main" type="Node"]
+script = ExtResource( 1 )
+
+[node name="ring" parent="." instance=ExtResource( 2 )]
+position = Vector2( 511.193, 297.085 )
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 803.617, 339 )
+
+[node name="Timer" type="Timer" parent="Player"]
+process_mode = 0
+wait_time = 2.0
+
+[node name="opponent" parent="." instance=ExtResource( 4 )]
+position = Vector2( 247.346, 331.414 )
+scale = Vector2( 0.6, 0.6 )
+collision_mask = 3
+collision/safe_margin = 0.02
+
+[node name="Action" type="Timer" parent="opponent"]
+wait_time = 2.0
+
+[node name="Melee" type="Timer" parent="opponent"]
+
+[node name="Rest" type="Timer" parent="opponent"]
+wait_time = 2.0
+
+[connection signal="strike" from="Player" to="opponent" method="_on_Struck"]
+[connection signal="timeout" from="Player/Timer" to="Player" method="_on_Timer_timeout"]
+[connection signal="timeout" from="opponent/Action" to="opponent" method="_on_Action_timeout"]
+[connection signal="timeout" from="opponent/Melee" to="opponent" method="_on_Melee_timeout"]
+[connection signal="timeout" from="opponent/Rest" to="opponent" method="_on_Rest_timeout"]
