@@ -1,20 +1,15 @@
 extends Node
 
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
 
+#this script connects signals going from game objects to methods in other objects
 func _ready():
 	$Player.connect("jump", $ring, "_on_Player_Jump")
 	$Player.connect("fall", $ring, "on_Player_Fall")
-	$Player.connect("move_past", $opponent, "_on_Moving_By")
-	$Player.connect("block", $opponent, "_on_Block")
+	$Player.connect("move_past", $Opponent, "_on_Moving_By")
+	$Player.connect("block", $Opponent, "_on_Block")
+	$"Opponent/Fist/".connect("e_strike", $Player, "on_Player_Struck")
+	$"Player/Fist/".connect("p_strike", $Opponent, "on_Enemy_Struck")
+	$Player.connect("health_changed", $GUI_player, "on_health_changed")
+	$Opponent.connect("health_changed", $GUI_comp, "on_health_changed")
 
-	# Called when the node is added to the scene for the first time.
-	# Initialization here
 
-
-#func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass

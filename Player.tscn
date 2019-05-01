@@ -1,32 +1,65 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://player_controller.gd" type="Script" id=1]
 [ext_resource path="res://art/plyr_block.png" type="Texture" id=2]
+[ext_resource path="res://Fist.gd" type="Script" id=3]
+[ext_resource path="res://art/player_fist.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-
-custom_solver_bias = 0.0
 extents = Vector2( 14, 10 )
 
-[node name="Player" type="KinematicBody2D"]
+[sub_resource type="Animation" id=2]
+resource_name = "punch"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("..:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -33.3333, 22.2222 ), Vector2( -111.111, 6.66666 ), Vector2( -35.5555, 25.5556 ) ]
+}
 
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 16.2693, 21.6074 )
+
+[node name="Player" type="KinematicBody2D"]
 scale = Vector2( 0.9, 0.9 )
-input_pickable = false
-collision_layer = 1
-collision_mask = 1
 collision/safe_margin = 0.05
 script = ExtResource( 1 )
-_sections_unfolded = [ "collision" ]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
-
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.153534, -1.38915 )
 scale = Vector2( 4.73529, 4.92308 )
 shape = SubResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="." index="1"]
-
+[node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
-_sections_unfolded = [ "Transform" ]
 
+[node name="Fist" type="Area2D" parent="."]
+editor/display_folded = true
+position = Vector2( -35.5555, 25.5556 )
+z_index = 1
+z_as_relative = false
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
 
+[node name="fist" type="Sprite" parent="Fist"]
+position = Vector2( -1.11111, -1.11111 )
+scale = Vector2( 0.2679, 0.456372 )
+texture = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Fist/fist"]
+anims/punch = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fist"]
+position = Vector2( -1.1111, 9.53674e-07 )
+shape = SubResource( 3 )
+
+[connection signal="body_entered" from="Fist" to="Fist" method="_on_Fist_body_entered"]

@@ -1,15 +1,28 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Node.gd" type="Script" id=1]
 [ext_resource path="res://ring.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://ai_opponent.tscn" type="PackedScene" id=4]
+[ext_resource path="res://GUI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://GUI.gd" type="Script" id=6]
+[ext_resource path="res://GUI_Player.tscn" type="PackedScene" id=7]
+[ext_resource path="res://GUI_comp.gd" type="Script" id=8]
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
 
 [node name="ring" parent="." instance=ExtResource( 2 )]
-position = Vector2( 511.193, 297.085 )
+position = Vector2( 512.693, 297.085 )
+
+[node name="Label" type="Label" parent="ring"]
+margin_left = -29.3592
+margin_top = -41.0887
+margin_right = 88.6408
+margin_bottom = -27.0887
+rect_scale = Vector2( 0.18, 0.3 )
+size_flags_horizontal = 0
+text = "press \"a\" to punch"
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 803.617, 339 )
@@ -18,22 +31,36 @@ position = Vector2( 803.617, 339 )
 process_mode = 0
 wait_time = 2.0
 
-[node name="opponent" parent="." instance=ExtResource( 4 )]
+[node name="Opponent" parent="." instance=ExtResource( 4 )]
 position = Vector2( 247.346, 331.414 )
 scale = Vector2( 0.6, 0.6 )
 collision_mask = 3
 collision/safe_margin = 0.02
 
-[node name="Action" type="Timer" parent="opponent"]
+[node name="Action" type="Timer" parent="Opponent"]
 wait_time = 2.0
 
-[node name="Melee" type="Timer" parent="opponent"]
+[node name="Melee" type="Timer" parent="Opponent"]
+wait_time = 0.15
 
-[node name="Rest" type="Timer" parent="opponent"]
+[node name="Rest" type="Timer" parent="Opponent"]
 wait_time = 2.0
 
-[connection signal="strike" from="Player" to="opponent" method="_on_Struck"]
+[node name="GUI_player" parent="." instance=ExtResource( 5 )]
+margin_left = 525.0
+margin_top = 23.5
+margin_right = 1029.0
+margin_bottom = 76.5
+script = ExtResource( 6 )
+
+[node name="GUI_comp" parent="." instance=ExtResource( 7 )]
+margin_top = 23.0
+margin_right = 504.0
+margin_bottom = 76.0
+script = ExtResource( 8 )
+
+[connection signal="strike" from="Player" to="Opponent" method="_on_Struck"]
 [connection signal="timeout" from="Player/Timer" to="Player" method="_on_Timer_timeout"]
-[connection signal="timeout" from="opponent/Action" to="opponent" method="_on_Action_timeout"]
-[connection signal="timeout" from="opponent/Melee" to="opponent" method="_on_Melee_timeout"]
-[connection signal="timeout" from="opponent/Rest" to="opponent" method="_on_Rest_timeout"]
+[connection signal="timeout" from="Opponent/Action" to="Opponent" method="_on_Action_timeout"]
+[connection signal="timeout" from="Opponent/Melee" to="Opponent" method="_on_Melee_timeout"]
+[connection signal="timeout" from="Opponent/Rest" to="Opponent" method="_on_Rest_timeout"]
