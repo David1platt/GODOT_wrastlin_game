@@ -1,0 +1,174 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://PlayerSelectionScreen.gd" type="Script" id=1]
+[ext_resource path="res://ConnectionBold.otf" type="DynamicFontData" id=2]
+[ext_resource path="res://art/37633153_10157521626709256_413151900842590208_n.jpg" type="Texture" id=3]
+[ext_resource path="res://art/Jeremiah.jpg" type="Texture" id=4]
+[ext_resource path="res://art/JOhn_P.jpg" type="Texture" id=5]
+[ext_resource path="res://art/Merlin.jpg" type="Texture" id=6]
+[ext_resource path="res://art/mr_T.jpg" type="Texture" id=7]
+[ext_resource path="res://art/Ben.jpg" type="Texture" id=8]
+[ext_resource path="res://art/RodneyD.jpg" type="Texture" id=9]
+[ext_resource path="res://art/George_Burns.png" type="Texture" id=10]
+
+[sub_resource type="StyleBoxTexture" id=1]
+region_rect = Rect2( 44.375, 18.5, 0.125, 0.375 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 40
+outline_color = Color( 0.933333, 0.14902, 0.14902, 1 )
+font_data = ExtResource( 2 )
+
+[node name="PlayerSelectionScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_vertical_guides_": [ 513.697 ]
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -442.0
+margin_top = 15.0
+margin_right = 438.0
+margin_bottom = 540.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 890.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 890, 50 )
+alignment = 1
+
+[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_left = 230.0
+margin_right = 660.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 130, 40 )
+size_flags_vertical = 1
+custom_styles/normal = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0.811765, 0.231373, 0.231373, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_y = 4
+text = "Select  Your  Wrestler"
+align = 1
+
+[node name="columnOne" type="VBoxContainer" parent="VBoxContainer"]
+margin_top = 54.0
+margin_right = 890.0
+margin_bottom = 254.0
+rect_min_size = Vector2( 720, 200 )
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_constants/separation = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/columnOne"]
+margin_right = 890.0
+margin_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 30
+
+[node name="Dave" type="TextureButton" parent="VBoxContainer/columnOne/HBoxContainer"]
+margin_right = 200.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+texture_normal = ExtResource( 3 )
+expand = true
+
+[node name="Miah" type="TextureButton" parent="VBoxContainer/columnOne/HBoxContainer"]
+margin_left = 230.0
+margin_right = 430.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+texture_normal = ExtResource( 4 )
+expand = true
+
+[node name="John" type="TextureButton" parent="VBoxContainer/columnOne/HBoxContainer"]
+margin_left = 460.0
+margin_right = 660.0
+margin_bottom = 200.0
+texture_normal = ExtResource( 5 )
+
+[node name="Merlin" type="TextureButton" parent="VBoxContainer/columnOne/HBoxContainer"]
+margin_left = 690.0
+margin_right = 890.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 150, 150 )
+texture_normal = ExtResource( 6 )
+
+[node name="ColumnTwo" type="VBoxContainer" parent="VBoxContainer"]
+anchor_bottom = 1.0
+margin_top = 300.0
+margin_right = 890.0
+margin_bottom = -67.0
+rect_min_size = Vector2( 890, 200 )
+custom_constants/separation = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ColumnTwo"]
+margin_right = 890.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 890, 200 )
+custom_constants/separation = 30
+
+[node name="Mr_T" type="TextureButton" parent="VBoxContainer/ColumnTwo/HBoxContainer"]
+margin_right = 200.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+texture_normal = ExtResource( 7 )
+
+[node name="Ben" type="TextureButton" parent="VBoxContainer/ColumnTwo/HBoxContainer"]
+margin_left = 230.0
+margin_right = 430.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+texture_normal = ExtResource( 8 )
+
+[node name="Rodney" type="TextureButton" parent="VBoxContainer/ColumnTwo/HBoxContainer"]
+margin_left = 460.0
+margin_right = 660.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+texture_normal = ExtResource( 9 )
+
+[node name="Burns" type="TextureButton" parent="VBoxContainer/ColumnTwo/HBoxContainer"]
+margin_left = 690.0
+margin_right = 890.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+texture_normal = ExtResource( 10 )
+
+[node name="ColumnThree" type="VBoxContainer" parent="VBoxContainer"]
+margin_top = 462.0
+margin_right = 890.0
+margin_bottom = 462.0
+custom_constants/separation = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ColumnThree"]
+margin_right = 890.0
+
+[node name="TextureButton" type="TextureButton" parent="VBoxContainer/ColumnThree/HBoxContainer"]
+
+[node name="TextureButton2" type="TextureButton" parent="VBoxContainer/ColumnThree/HBoxContainer"]
+margin_left = 4.0
+margin_right = 4.0
+
+[node name="TextureButton3" type="TextureButton" parent="VBoxContainer/ColumnThree/HBoxContainer"]
+margin_left = 8.0
+margin_right = 8.0
+
+[node name="TextureButton4" type="TextureButton" parent="VBoxContainer/ColumnThree/HBoxContainer"]
+margin_left = 12.0
+margin_right = 12.0
+
+[connection signal="pressed" from="VBoxContainer/columnOne/HBoxContainer/Dave" to="." method="_on_Dave_pressed"]
+[connection signal="pressed" from="VBoxContainer/columnOne/HBoxContainer/Miah" to="." method="_on_Miah_pressed"]
+[connection signal="pressed" from="VBoxContainer/columnOne/HBoxContainer/John" to="." method="_on_John_pressed"]
+[connection signal="pressed" from="VBoxContainer/columnOne/HBoxContainer/Merlin" to="." method="_on_Merlin_pressed"]
+[connection signal="pressed" from="VBoxContainer/ColumnTwo/HBoxContainer/Mr_T" to="." method="_on_Mr_T_pressed"]
+[connection signal="pressed" from="VBoxContainer/ColumnTwo/HBoxContainer/Ben" to="." method="_on_Ben_pressed"]
+[connection signal="pressed" from="VBoxContainer/ColumnTwo/HBoxContainer/Rodney" to="." method="_on_Rodney_pressed"]
+[connection signal="pressed" from="VBoxContainer/ColumnTwo/HBoxContainer/Burns" to="." method="_on_Burns_pressed"]
