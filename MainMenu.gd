@@ -1,7 +1,7 @@
 extends Control
 
 func _on_QuickMatchButton_pressed():
-	get_tree().change_scene("Main.tscn")
+	get_tree().change_scene("PlayerSelectionScreen.tscn")
 
 
 func _on_TournamentButton_pressed():

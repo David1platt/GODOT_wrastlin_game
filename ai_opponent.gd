@@ -11,8 +11,8 @@ var my_hits
 var max_health = 100.0
 enum status_type {ATTACK, FLEE, FLANK, REST}
 signal health_changed
-signal died
-signal strike
+#signal died
+#signal strike
 var ring_back
 var ring_floor 
 var status
@@ -105,11 +105,11 @@ func _physics_process(delta):
 	if move_check:
 		match status:
 			status_type.ATTACK:
-				movement()
+				movement(delta)
 			status_type.FLEE:
 				flee()
 			status_type.FLANK:
-				flank()
+				flank(delta)
 			status_type.REST:
 				flee()
 			_:
@@ -122,19 +122,22 @@ func _physics_process(delta):
 
 #computer is over 128 pixels away from center of human player, move computer player
 #toward the computer player
-func movement():		
+func movement(delta):		
 	if position.distance_to(plyr.position) > 128:
 		$Melee.paused = true
+		velocity *= speed * delta
 		collision = move_and_collide(velocity.normalized())	
 	elif position.distance_to(plyr.position) <= 128 and position.y <= plyr.position.y:
 		velocity.y += 1
 		velocity.x = 0
 		if position.y <= plyr.position.y - 2:
+			velocity *= speed * delta
 			collision = move_and_collide(velocity.normalized())
 	elif position.distance_to(plyr.position) <= 128 and position.y >= plyr.position.y:
 		velocity.y -= 1
 		velocity.x = 0
 		if position.y >= plyr.position.y + 2:
+			velocity *= speed * delta
 			collision = move_and_collide(velocity.normalized())
 		if collision != null:
 			print(collision.collider.get_name())
@@ -149,13 +152,14 @@ func flee():
 	velocity = (plyr.position - position) * -1
 	if position.distance_to(plyr.position) <= 220:#confirms computer moving away
 		move_check = true
+		velocity *= speed
 		move_and_collide(velocity.normalized())
 	if position.distance_to(plyr.position) >= 220:#resets computer to move too player
 		status = status_type.ATTACK
 		plyr_hits = 0
 
 #puter circles around player then moves back in to attack player from opposite side
-func flank():
+func flank(delta):
 	if position.distance_to(plyr.position) < 160:
 		move_check = true
 		if position.y <= plyr.position.y:
@@ -178,6 +182,7 @@ func flank():
 			velocity.y = 0
 			velocity.x += 1
 		$Melee.paused = true
+		velocity *= speed * delta
 		collision = move_and_collide(velocity.normalized())	
 	else:
 		status = status_type.ATTACK

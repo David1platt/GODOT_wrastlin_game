@@ -15,14 +15,13 @@ signal jump
 signal fall
 signal move_past
 signal block
-signal strike
 signal grapple
 signal health_changed
 
 #ready() allows us to initialize variables when the object is created in the game world
 func _ready():
 	velocity = 0 
-	speed = 7
+	speed = 100
 	jump_speed = 11
 	jump_state = true
 	orig_y = position.y
@@ -35,7 +34,7 @@ func _ready():
 #physics_process runs on a loop that updates every frame, which should be 60 fps
 func _physics_process(delta):
 	linear_vel = move()# linear_vel is the movement vector for the player
-	linear_vel *= speed
+	linear_vel *= speed * delta
 	if Input.is_action_just_pressed("jump"):# sets the initial y coordinate of the player sprite
 		orig_y = position.y
 	if Input.is_action_pressed("jump") && jump_state:#jump boolean checks if player sprite is on the ground
