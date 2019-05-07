@@ -6,6 +6,8 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$ChangeScene.start()
+	$ChangeScene.paused = true
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -14,32 +16,36 @@ func _ready():
 
 
 func _on_Dave_pressed():
-	get_tree().change_scene("Main.tscn") # Replace with function body.
+	$ChangeScene.paused = false
 
 
 func _on_Miah_pressed():
-	get_tree().change_scene("Main.tscn")
+	$ChangeScene.paused = false
 
 
 func _on_John_pressed():
-	get_tree().change_scene("Main.tscn")
+	$ChangeScene.paused = false
 
 
 func _on_Merlin_pressed():
-	get_tree().change_scene("Main.tscn")
+	$ChangeScene.paused = false
 
 
 func _on_Mr_T_pressed():
-	get_tree().change_scene("Main.tscn")
+	$ChangeScene.paused = false
 
 
 func _on_Ben_pressed():
-	get_tree().change_scene("Main.tscn")
+	$ChangeScene.paused = false
 
 
 func _on_Rodney_pressed():
-	get_tree().change_scene("Main.tscn")
+	$ChangeScene.paused = false
 
 
 func _on_Burns_pressed():
+	$ChangeScene.paused = false
+
+
+func _on_ChangeScene_timeout():
 	get_tree().change_scene("Main.tscn")
