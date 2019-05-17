@@ -20,7 +20,7 @@ var status
 #variables are initialized here
 func _ready():
 	speed = 50
-	plyr = get_node("/root/Main/Player")
+	#plyr = get_node("/root/Main/Player")
 	ring_back = get_node("/root/Main/ring/ring-back")
 	ring_floor = get_node("/root/Main/ring/ring-floor")
 	$Action.start()
@@ -32,23 +32,24 @@ func _ready():
 	my_hits = 0
 	status = 0
 	
+	
+func on_set_target(sel_player):
+	plyr = sel_player
 #computer selects new direction to move and a new action to take depending on state_choice results
 func _on_Action_timeout():
 	move_check = false
-	velocity.x = 0
-	velocity.y = 0
 	ai_move()
-	state_choice()
+
 	
 #everytime the Melee timer times out a new ai action choice is made
 func _on_Melee_timeout():
-	state_choice()
+	combat_choice()
 # ndom number between 1 - 100 is select the action of the computer player
-func state_choice():
+func combat_choice():
 	var chance = randi() % 100 + 1
 	if plyr_hits > 1: #if computer is hit by the human player more than once flee method call
 		status = status_type.FLEE
-		flee()
+		#flee()
 		return
 	if chance < 20:#no action here yet
 		chance = 0
@@ -69,29 +70,12 @@ func state_choice():
 		print("flank")
 		chance = 0
 		return
-		
-#unused function		
-#func choose_direct(direction, velocity):
-#	match direction:
-#		1, 2:
-#			velocity.x -= 1
-#			return velocity	
-#		3, 4: 
-#			velocity.x += 1
-#			return velocity
-#		5:
-#			velocity.y += 1
-#			return velocity
-#		6:
-#			velocity.y -= 1
-#			return velocity
-#		!1, !2, !3, !4:
-#			pass		
+
 	
 #computer player moves toward human player
 func ai_move():	
 	if position.distance_to(plyr.position) > 128:
-		velocity = (plyr.position - position) * speed #sets vector going toward human player
+		velocity = (plyr.position - position) #sets vector going toward human player
 		$Sprite.flip_h = velocity.x < 0 
 		#if velocity.x < 0:
 		#	$Fist.position.x -= 40
@@ -107,17 +91,17 @@ func _physics_process(delta):
 			status_type.ATTACK:
 				movement(delta)
 			status_type.FLEE:
-				flee()
+				flee(delta)
 			status_type.FLANK:
 				flank(delta)
 			status_type.REST:
-				flee()
+				flee(delta)
 			_:
 				print("ai status is null!")
 	else:#if move_check fails 
 		ai_move()#set computer direction
 		$Melee.paused = false#stops the attack action timer
-	if $Action.time_left > 1.9:#when Action timer reset computer allowed to move
+	if $Action.time_left > 0.9:#when Action timer reset computer allowed to move
 		move_check = true
 
 #computer is over 128 pixels away from center of human player, move computer player
@@ -147,14 +131,12 @@ func movement(delta):
 
 #sets computer move vector away from player, allows computer to move 220 pixels away from player
 #then moves the computer back to towards the player
-func flee():
-	velocity.x += 1 
-	velocity = (plyr.position - position) * -1
-	if position.distance_to(plyr.position) <= 220:#confirms computer moving away
+func flee(delta):
+	if position.distance_to(plyr.position) <= 180:#confirms computer moving away
 		move_check = true
-		velocity *= speed
+		velocity = ((plyr.position - position) * (speed + 20)) * delta * -1
 		move_and_collide(velocity.normalized())
-	if position.distance_to(plyr.position) >= 220:#resets computer to move too player
+	if position.distance_to(plyr.position) >= 180:#resets computer to move too player
 		status = status_type.ATTACK
 		plyr_hits = 0
 
@@ -190,13 +172,13 @@ func flank(delta):
 
 #allows player to pass by computer player
 func _on_Moving_By():
-	var player = $"../Player"
-	add_collision_exception_with(player)
+	#var player = $"../Player"
+	add_collision_exception_with(plyr)
 
 # stops player from entering computer player space	
 func _on_Block():
-	var player = $"../Player"
-	remove_collision_exception_with(player)	
+	#var player = $"../Player"
+	remove_collision_exception_with(plyr)	
 
 #updates computer player health and sends signal to lifebar GUI
 func on_Enemy_Struck(): 

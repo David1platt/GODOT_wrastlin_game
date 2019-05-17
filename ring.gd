@@ -4,18 +4,18 @@ extends StaticBody2D
 # var a = 2
 # var b = "textvar"
 
-func _ready():
+#func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
-	pass
+#	pass
 
 func _on_Player_Jump():
-	var player = get_parent().get_node("Player")
-	$"ring-back".add_collision_exception_with(player)
+	var plyr = get_parent().get('player')
+	$"ring-back".add_collision_exception_with(plyr)
 		
 
 func on_Player_Fall():
-	var player = get_parent().get_node("Player")
+	var player = get_parent().get("player")
 	$"ring-back".remove_collision_exception_with(player)
 
 	

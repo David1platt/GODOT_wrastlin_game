@@ -16,18 +16,21 @@ signal fall
 signal move_past
 signal block
 signal grapple
+signal set_health
 signal health_changed
 
 #ready() allows us to initialize variables when the object is created in the game world
 func _ready():
 	velocity = 0 
 	speed = 100
-	jump_speed = 11
+	jump_speed = 100
 	jump_state = true
 	orig_y = position.y
 	opponent = get_node("/root/Main/Opponent")
-	$Timer.stop()
-	max_health = 100
+	get_child(3).start()
+	get_child(3).paused = true
+	max_health = 100.0
+	emit_signal("set_health", max_health)
 	min_health = 0
 	fist_g = false
 
@@ -38,9 +41,9 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump"):# sets the initial y coordinate of the player sprite
 		orig_y = position.y
 	if Input.is_action_pressed("jump") && jump_state:#jump boolean checks if player sprite is on the ground
-		linear_vel = jump(linear_vel)#jump() changes the vertical y-axis of the movement vector 
-	linear_vel = _on_Timer_timeout()# when the timer times out the player falls back to their original vertical position and can jump again
-	collision = move_and_collide(linear_vel) #built in move method that checks for collisions
+		linear_vel = jump(linear_vel) * delta#jump() changes the vertical y-axis of the movement vector 
+	linear_vel = _on_Timer_timeout() * delta# when the timer times out the player falls back to their original vertical position and can jump again
+	collision = move_and_collide(linear_vel.normalized()) #built in move method that checks for collisions
 	if collision and collision.collider.get_name() == "Opponent": #checks if collider is the computer player
 		if position.y >= collision.collider.position.y + 30 or position.y <= collision.collider.position.y - 30:
 			emit_signal("move_past")
@@ -66,7 +69,7 @@ func hit():
 func on_Player_Struck():
 	max_health -= 5
 	emit_signal("health_changed", max_health)
-	print(max_health)
+	#print(max_health)
 	
 #changes to velocity x and y values change the movement vector each frame
 func move():
@@ -82,17 +85,18 @@ func move():
 	if Input.is_action_pressed("ui_left"):
 			velocity.x -= 1
 	#velocity *= speed
-	return velocity.normalized()
+	return velocity
 
 #while the timer is still running the movement vector is changed applying and up and fwd force to simulate
 #a jumping motion updated move vector is returned
 func jump(linear_vel): 
-	$Timer.paused = false
-	$Timer.start()
+	#$Timer.paused = false
+	get_child(3).paused = false
+	#$Timer.start()
 	emit_signal("jump") 	
 	linear_vel.y -= 1
-	linear_vel.y *= jump_speed 
-	linear_vel.x = linear_vel.x / 5
+	linear_vel.y *= jump_speed #* delta
+	linear_vel.x = linear_vel.x/ 5
 	return linear_vel
 			
 #when the timer runs out the move vector is changed to make the player fall, player can jump again
@@ -103,7 +107,8 @@ func _on_Timer_timeout():
 		linear_vel *= jump_speed
 		linear_vel.x = linear_vel.x / 4
 	if position.y == orig_y:
-		$Timer.paused = true
+		#$Timer.paused = true
+		get_child(3).paused = true
 		emit_signal("fall")
 		jump_state = true
 	return linear_vel

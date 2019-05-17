@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Fist.gd" type="Script" id=1]
+[ext_resource path="res://art/player_fist.png" type="Texture" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "punch"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("..:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -33.3333, 22.2222 ), Vector2( -111.111, 6.66666 ), Vector2( -35.5555, 25.5556 ) ]
+}
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16.2693, 21.6074 )
+
+[node name="Fist" type="Area2D"]
+position = Vector2( -35.5555, 25.5556 )
+z_index = 1
+z_as_relative = false
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="fist" type="Sprite" parent="."]
+position = Vector2( -1.11111, -1.11111 )
+scale = Vector2( 0.2679, 0.456372 )
+texture = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="fist"]
+anims/punch = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -1.1111, 9.53674e-07 )
+shape = SubResource( 2 )
+
+[connection signal="body_entered" from="." to="." method="_on_Fist_body_entered"]

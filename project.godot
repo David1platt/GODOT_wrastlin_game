@@ -19,6 +19,10 @@ config/name="wrastling_fix"
 run/main_scene="res://MainMenu.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+game_manager="*res://game_manager.gd"
+
 [input]
 
 jump={
