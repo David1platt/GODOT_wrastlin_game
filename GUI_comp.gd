@@ -6,10 +6,11 @@ onready var tween = $Tween
 
 var animated_health = 0
 
-func _ready():
-	var player_max_health = $"../Opponent".max_health
-	bar.max_value = player_max_health
-	update_health(player_max_health)
+#func _ready():
+#	if $"/root/Main".computer != null:
+#		var player_max_health = $"/root/Main".computer.max_health
+#		bar.max_value = player_max_health
+#		update_health(player_max_health)
 	#tween.start()
 	
 func update_health(new_value):
@@ -22,7 +23,8 @@ func on_health_changed(health):
 	update_health(health)
 	print(health)
 	
-func _process(delta):
-	var rounded_val = round(animated_health)
-	number_label.text = str(rounded_val)
-	bar.value = rounded_val
+#unc _process(delta):
+#	var rounded_val = round(animated_health)
+#	number_label.text = str(rounded_val)
+#	bar.value = rounded_val
+	#pass

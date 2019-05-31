@@ -4,6 +4,7 @@ extends KinematicBody2D
 var speed
 var velocity = Vector2()
 var plyr
+var comp
 var collision
 var move_check
 var plyr_hits
@@ -11,8 +12,6 @@ var my_hits
 var max_health = 100.0
 enum status_type {ATTACK, FLEE, FLANK, REST}
 signal health_changed
-#signal died
-#signal strike
 var ring_back
 var ring_floor 
 var status
@@ -20,21 +19,26 @@ var status
 #variables are initialized here
 func _ready():
 	speed = 50
-	#plyr = get_node("/root/Main/Player")
+	comp = get_node("/root/Main/").get_child(4)
+	print(comp.get_name())
 	ring_back = get_node("/root/Main/ring/ring-back")
 	ring_floor = get_node("/root/Main/ring/ring-floor")
-	$Action.start()
-	$Melee.start()
+	get_child(3).start()
+	get_child(4).start()
 	move_check = false
 	velocity.x = 0
 	velocity.y = 0
 	plyr_hits = 0
 	my_hits = 0
 	status = 0
+	self.connect("health_changed", $"../GUI_comp", "on_health_changed")
+	self.get_child(2).connect("p_strike", comp, "on_Player_Struck")
+	emit_signal("health_changed", max_health)
 	
 	
 func on_set_target(sel_player):
 	plyr = sel_player
+	#print(plyr.get_name())
 #computer selects new direction to move and a new action to take depending on state_choice results
 func _on_Action_timeout():
 	move_check = false
@@ -74,7 +78,7 @@ func combat_choice():
 	
 #computer player moves toward human player
 func ai_move():	
-	if position.distance_to(plyr.position) > 128:
+	if position.distance_to(plyr.position) < 128:
 		velocity = (plyr.position - position) #sets vector going toward human player
 		$Sprite.flip_h = velocity.x < 0 
 		#if velocity.x < 0:
@@ -82,7 +86,6 @@ func ai_move():
 		#else:
 		#	$Fist.position.x = 40
 		
-#warning-ignore:unused_argumen
 #if the computer player can move the game loop checks what the ai state is, state is saved
 #in status variable which selects from a list of enum values
 func _physics_process(delta):
@@ -100,15 +103,16 @@ func _physics_process(delta):
 				print("ai status is null!")
 	else:#if move_check fails 
 		ai_move()#set computer direction
-		$Melee.paused = false#stops the attack action timer
-	if $Action.time_left > 0.9:#when Action timer reset computer allowed to move
+		$Timer2.paused = false#stops the attack action timer
+	if $Timer.time_left > 0.9:#when Action timer reset computer allowed to move
 		move_check = true
+
 
 #computer is over 128 pixels away from center of human player, move computer player
 #toward the computer player
 func movement(delta):		
 	if position.distance_to(plyr.position) > 128:
-		$Melee.paused = true
+		$Timer2.paused = true
 		velocity *= speed * delta
 		collision = move_and_collide(velocity.normalized())	
 	elif position.distance_to(plyr.position) <= 128 and position.y <= plyr.position.y:
@@ -127,7 +131,7 @@ func movement(delta):
 			print(collision.collider.get_name())
 	else:#if computer distance to player <= 128 pixels center of computer, computer stops
 		move_check = false
-		$Action.paused = true		
+		$action.paused = true		
 
 #sets computer move vector away from player, allows computer to move 220 pixels away from player
 #then moves the computer back to towards the player
@@ -163,7 +167,7 @@ func flank(delta):
 		elif position.y <= plyr.position.y - 30:
 			velocity.y = 0
 			velocity.x += 1
-		$Melee.paused = true
+		$melee.paused = true
 		velocity *= speed * delta
 		collision = move_and_collide(velocity.normalized())	
 	else:

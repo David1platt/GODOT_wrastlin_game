@@ -3,7 +3,7 @@ extends Node
 
 var human_player
 var cpu_player
-var ref_count# Declare member variables here. Examples:
+#var ref_count# Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 
