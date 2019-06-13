@@ -15,12 +15,12 @@ signal health_changed
 var ring_back
 var ring_floor 
 var status
+var hitable = true #Used for Collision detection
 
 #variables are initialized here
 func _ready():
 	speed = 50
-	comp = get_node("/root/Main/").get_child(4)
-	print(comp.get_name())
+	comp = get_node("/root/Main/").get_child(3) 
 	ring_back = get_node("/root/Main/ring/ring-back")
 	ring_floor = get_node("/root/Main/ring/ring-floor")
 	get_child(3).start()

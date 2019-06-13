@@ -17,8 +17,8 @@ signal set_target
 
 #this script connects signals going from game objects to methods in other objects
 func _ready():
+	computer = spawn_character(game_manager.cpu_player, "comp") #Instance the Computer first
 	player = spawn_character(game_manager.human_player, "hum")
-	computer = spawn_character(game_manager.cpu_player, "comp")
 	player_interaction_setup()
 	self.connect("set_target", computer, "on_set_target")
 	emit_signal("set_target", player)
@@ -65,9 +65,9 @@ func spawn_character(name, player_type):
 			
 func setting_character_components(player, player_type):
 	if player_type == "hum":
-		add_child(player, true)
 		player.set_script(load("res://player_controller.gd"))
 		player.position = START_POINT
+		add_child(player, true) #Add the Script first, then add as Child
 	if player_type == "comp":
 		computer = player
 		var action = Timer.new()

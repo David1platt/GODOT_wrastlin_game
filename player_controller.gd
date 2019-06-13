@@ -11,6 +11,7 @@ var linear_vel = Vector2()
 var opponent
 var collision
 var fist_g
+var hitable = true #Used for Collision detection
 signal jump
 signal fall
 signal move_past
@@ -26,7 +27,7 @@ func _ready():
 	jump_speed = 100
 	jump_state = true
 	orig_y = position.y
-	opponent = get_node("/root/Main").get_child(4)
+	opponent = get_node("/root/Main").get_child(3)
 	print(opponent.get_name())
 	max_health = 100.0
 	emit_signal("set_health", max_health)
@@ -64,7 +65,7 @@ func attack():
 		print("player grab")
 	 
 func hit():
-		get_node("../Fist/fist/AnimationPlayer").play("punch")
+		get_node("Fist/fist/AnimationPlayer").play("punch") #It didn't find the AnimationPlayer cause of the ../ in front of the Path
 		fist_g = true
 	
 #updates health when player is hit and sends a signal to the life bar GUI
